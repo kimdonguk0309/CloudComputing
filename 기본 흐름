@@ -1,0 +1,65 @@
+###VPC 정보###
+
+Name Tag		CIDR
+skills-vpc		10.100.0.0/16
+#############################################################
+
+###Subnet 정보###
+
+Name Tag				CIDR				AZ
+skills-public-subnet-a		10.100.1.0/24		ap-northeast-2a
+skills-public-subnet-b		10.100.2.0/24		ap-northeast-2b
+
+skills-private-subnet-a		10.100.11.0/24		ap-northeast-2a
+skills-private-subnet-b		10.100.12.0/24		ap-northeast-2b
+
+skills-protected-subnet-a 	10.100.21.0/24		ap-northeast-2a
+skills-protected-subnet-b	10.100.22.0/24		ap-northeast-2b
+############################################################
+
+###Route Tables 정보###
+
+Name Tag				Subnet									Gateway
+skills-public-rtb			Skills-public-subnet-a / skills-public-subnet-b			Internet Gateway (Name Tag : skills-igw)
+
+skills-private-rtb-a		skills-private-subnet-a							Nat Gateway (Name Tag : skills-nat-a)
+skills-private-rtb-b		skills-private-subnet-b							Nat Gateway (Name Tag : skills-nat-a)
+
+skills-protected-rtb		skills-protected-subnet-a / skills-public-subnet-b		NO INTERNET ACCESS
+############################################################
+
+###Bastion Server###
+
+EC2 Bastion(JUMP Server : Security)
+
+IP는 재부팅 후에도 변경되서는 안 된다. (탄력적 IP)
+
+SSH로 서버에 접근 가능해야한다. (이때, 기본 포트인 22 포트는 사용할 수 없다) ==> 대체 포트 2222등을 사용한다.
+
+인스턴스의 root 계정에서 AWS CLI를 사용하면 AWS의 모든 권한을 사용할 수 있어야 한다. ==> aws configure 설정
+
+kubectl을 사용하면 해당 EKS Cluster의 모든 권한을 사용할 수 있어야 한다. ==> kubectl, curl, jq설치 / iam (클러스터) 권한을 적용
+
+Instance Type : t4g.large
+OS : Amazon Linux
+Name Tag : skills-bastion-ec2
+###########################################################
+
+###NoSQL Database###
+
+++) User 애플리케이션은 데이터베이스로 MongoDB를 사용한다.
+AWS에서는 DocumentDB를 활용해 MongoDB를 사용할 수 있다.
+
+포트를 기본 포트에서 다른 포트로 바꾼다.
+
+option으로 고가용성 보장 + 암호화와 로깅(audit, profiler), 백업 활성화 
+
+++)보안을 위해 인터넷과 연결되지 않는 환경에 구성
+Cluster Name : skills-mongodb-cluster
+Engine Version : 5.0.0
+Instance Class : db.t4g.medium ==> 클러스터를 인스턴스 형식으로 설정
+
+
+
+
+
