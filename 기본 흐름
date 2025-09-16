@@ -58,6 +58,15 @@ option으로 고가용성 보장 + 암호화와 로깅(audit, profiler), 백업 
 Cluster Name : skills-mongodb-cluster
 Engine Version : 5.0.0
 Instance Class : db.t4g.medium ==> 클러스터를 인스턴스 형식으로 설정
+############################################################
+
+###In-Memory Database###
+
+token 애플리케이션은 데이터베이스로 Redis를 사용합니다.
+
+AWS에서 사용할 수 있는 Manage Redis Service 중 하나인 ElastiCache를 활용해 token 애플리케이션이 사용할 수 있도록 합니다.
+
+
 
 
 
